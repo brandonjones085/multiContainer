@@ -4,23 +4,24 @@ services:
 
 # before install, test the client whether everything is fine
 before_install:
-  - docker build -t raghavn/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t raghavnayakaasaanjobs/react-test -f ./client/Dockerfile.dev ./client
 
 # testing the above image
 # --coverage to exit once tests are done
 script:
-  - docker run raghavn/react-test npm test -- --coverage
+  - docker run raghavnayakaasaanjobs/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t raghavn/multi-client ./client
-  - docker build -t raghavn/multi-nginx ./nginx
-  - docker build -t raghavn/multi-server ./server
-  - docker build -t raghavn/multi-worker ./worker
+  - docker build -t raghavnayakaasaanjobs/multi-client ./client
+  - docker build -t raghavnayakaasaanjobs/multi-nginx ./nginx
+  - docker build -t raghavnayakaasaanjobs/multi-server ./server
+  - docker build -t raghavnayakaasaanjobs/multi-worker ./worker
   # log in to Docker hub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # take the above images and push them to Docker hub
-  - docker push raghavn/multi-client
-  - docker push raghavn/multi-nginx
-  - docker push raghavn/multi-server
-  - docker push raghavn/multi-worker
+
+  - docker push raghavnayakaasaanjobs/multi-client
+  - docker push raghavnayakaasaanjobs/multi-nginx
+  - docker push raghavnayakaasaanjobs/multi-server
+  - docker push raghavnayakaasaanjobs/multi-worker
 
