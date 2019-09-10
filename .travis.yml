@@ -1,0 +1,24 @@
+sudo: required
+services: 
+  - docker
+
+before_install: 
+  - docker build -t brandonjones085/react-test -f ./client/Dockerfile.dev ./client
+
+script: 
+  - docker run brandonjones085/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t brandonjones085/multi-client ./client
+  - docker build -t brandonjones085/multi-nginx ./nginx
+  - docker build -t brandonjones085/multi-server ./server
+  - docker build -t brandonjones085/multi-worker ./worker
+
+  #log into docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  #push to docker hub
+  - docker push brandonjones085/multi-client
+  - docker push brandonjones085/multi-nginx
+  - docker push brandonjones085/multi-server
+  - docker push brandonjones085/multi-worker
